@@ -1,8 +1,0 @@
-version: '3.1'
-services:
-  jenkins:
-    build: .
-    volumes:
-      - /mnt/pidata/jenkins_home:/var/jenkins_home
-    ports:
-      - "8080:8080"

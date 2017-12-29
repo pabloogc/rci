@@ -16,3 +16,12 @@ services:
       - "8080:8080"
     volumes:
       - /mnt/pidata/jenkins_home:/var/jenkins_home
+  deluge:
+    build: ./deluge
+    restart: always
+    ports:
+      - "8112:8112"
+      - "58846:58846"
+    volumes:
+      - /mnt/pidata/deluge/config:/config
+      - /mnt/pidata/deluge/data:/data
