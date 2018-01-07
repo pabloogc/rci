@@ -6,5 +6,6 @@ EXPOSE 8080
 
 ADD http://mirrors.jenkins.io/war-stable/latest/jenkins.war /usr/share/jenkins/jenkins.war
 COPY ./ssh /root/.ssh
+RUN chmod 600 /root/.ssh/*
 
 CMD java -jar /usr/share/jenkins/jenkins.war
