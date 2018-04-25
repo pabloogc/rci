@@ -5,6 +5,7 @@ services:
     restart: always
     volumes:
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./nginx/gg:/data/gg"
     ports:
       - "80:80"
   # jenkins:
@@ -14,15 +15,15 @@ services:
   #     - "8080:8080"
   #   volumes:
   #     - /mnt/pidata/jenkins_home:/var/jenkins_home
-  deluge:
-    build: ./deluge
-    restart: always
-    ports:
-      - "8112:8112"
-      - "58846:58846"
-    volumes:
-      - /mnt/pidata/deluge/config:/config
-      - /mnt/pidata/deluge/data:/data
+  # deluge:
+  #   build: ./deluge
+  #   restart: always
+  #   ports:
+  #     - "8112:8112"
+  #     - "58846:58846"
+  #   volumes:
+  #     - /mnt/pidata/deluge/config:/config
+  #     - /mnt/pidata/deluge/data:/data
   intellij:
     build: ./intellij
     restart: always
