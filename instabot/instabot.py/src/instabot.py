@@ -121,6 +121,7 @@ class InstaBot:
     def __init__(self,
                  login,
                  password,
+                 id,
                  like_per_day=1000,
                  media_max_like=50,
                  media_min_like=0,
@@ -219,6 +220,7 @@ class InstaBot:
         # convert login to lower
         self.user_login = login.lower()
         self.user_password = password
+        self.user_id = id
         self.bot_mode = 0
         self.media_by_tag = []
         self.media_on_feed = []
@@ -297,7 +299,8 @@ class InstaBot:
             finder = r.text.find(self.user_login)
             if finder != -1:
                 ui = UserInfo()
-                self.user_id = ui.get_user_id_by_login(self.user_login)
+                # https://github.com/instabot-py/instabot.py/issues/1153
+                # self.user_id = ui.get_user_id_by_login(self.user_login)
                 self.login_status = True
                 log_string = '%s login success!' % (self.user_login)
                 self.write_log(log_string)

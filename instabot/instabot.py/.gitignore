@@ -1,4 +1,5 @@
 user_and_pass.txt
+follows_db.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
