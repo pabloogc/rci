@@ -10,21 +10,14 @@ from src.follow_protocol import follow_protocol
 from src.unfollow_protocol import unfollow_protocol
 
 user_and_pass = open('user_and_pass.txt').read().split('\n')
+tags = open('tags.txt').read().split(' ')
 
 bot = InstaBot(
     login=user_and_pass[0],
     password=user_and_pass[1],
-    id=user_and_pass[2],
     like_per_day=1000,
     comments_per_day=0,
-    tag_list=["grizzlygrit", 
-        "gg", "comingsoon", 
-        "fit", "fitfam", "workout", 
-        "training", "gym", "calistenia", 
-        "streetworkout", "eatclean", "healthy", 
-        "dietaflexible", "motivation", "fitness", 
-        "crosstraining", "weightlifting", 
-        "kettlebells", "bodybuilding", "powerlifting"],
+    tag_list=tags,
     tag_blacklist=[],
     user_blacklist={},
     max_like_for_one_tag=50,
