@@ -32,4 +32,7 @@ services:
   instabot:
     build: ./instabot
     restart: always
+    volumes: 
+      - "./instabot/instabot.py/follows_db.db:/app/"
+
     
