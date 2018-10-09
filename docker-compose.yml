@@ -29,10 +29,4 @@ services:
     restart: always
     ports: 
       - "1017:1017"
-  instabot:
-    build: ./instabot
-    restart: always
-    volumes: 
-      - "./instabot/instabot.py:/app"
-
     
