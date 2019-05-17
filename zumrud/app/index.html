@@ -1,0 +1,71 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <button onclick="App.loadAll();">Refresh</button>
+    </div>
+    <div>
+        <span>
+            User <input type="text" id="user" value="Anonymous">
+        </span>
+        <span>
+            Chirp <input type="text" id="text" value="">
+        </span>
+        <span>
+            <button onclick="App.sendFromInput()">Send</button>
+        </span>
+        <span id="chirps"></div>
+    <span>
+        <button onclick="App.clear();">Delete All</button>
+    </span>
+    </div>
+    <script>
+        class App {
+            static autoRefresh() {
+                setInterval(() => {
+                    App.loadAll()
+                }, 10000) //Auto refresh every 10 seconds
+            }
+
+            static loadAll() {
+                fetch(`all`)
+                    .then(res => res.json())
+                    .then(json => {
+                        var html = []
+                        html.push("<ul>")
+                        console.log("Refreshed Chirps")                        
+                        json.forEach(chirp => {
+                            let date = new Date(chirp.timestamp * 1000)
+                            html.push(`<li> [${date.toDateString()}] ${chirp.user} - ${chirp.text}</li>`)
+                        });
+                        html.push("</ul>")
+                        document.getElementById("chirps").innerHTML = html.join("")
+                    })
+            }
+
+            static sendFromInput() {
+                let user = document.getElementById("user").value
+                let text = document.getElementById("text").value
+                App.send(user, text)
+            }
+
+            static send(user, text) {
+                fetch(`send?user=${user}&text=${text}`)
+                    .then(res => App.loadAll())
+            }
+
+            static clear(user, text) {
+                fetch(`clear`)
+                    .then(res => App.loadAll())
+            }
+        }
+        App.loadAll()
+        App.autoRefresh()
+    </script>
+</body>
+
+</html>
