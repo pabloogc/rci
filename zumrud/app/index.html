@@ -1,30 +1,70 @@
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        .chirp-list {}
+
+        .chirtp-item {}
+    </style>
 </head>
 
 <body>
-    <div>
-        <button onclick="App.loadAll();">Refresh</button>
+
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
+    <div class="card container" style="margin-top: 20px;">
+        <div class="text-left" style="margin-left: 10%; padding-top: 20px">
+            <h1 class="tittle" style="justify-content: center">Chirper</h1>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="form-row align-items-center">
+                    <div class="col-sm-3 my-1">
+                        <label class="sr-only" for="user">User</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">@</div>
+                            </div>
+                            <input type="text" class="form-control" id="user" placeholder="Anonymous">
+                        </div>
+                    </div>
+                    <div class="col-sm-3 my-1">
+                        <label class="sr-only" for="text">Text</label>
+                        <input type="text" class="form-control" id="text" placeholder="What's happening?">
+                    </div>
+                    <div class="col-auto my-1">
+                        <button class="btn btn-info" onclick="App.sendFromInput()">Chirp</button>
+                    </div>
+                </div>
+            </form>
+
+
+            <!-- <button onclick="App.loadAll();">Refresh</button> -->
+            <div>
+                <span id="chirps"></span>
+            </div>
+
+            <div style="margin-top: 100px;">
+                <button class="btn btn-danger" onclick="App.clear();">Delete All</button>
+            </div>
+        </div>
     </div>
-    <div>
-        <span>
-            User <input type="text" id="user" value="Anonymous">
-        </span>
-        <span>
-            Chirp <input type="text" id="text" value="">
-        </span>
-        <span>
-            <button onclick="App.sendFromInput()">Send</button>
-        </span>
-        <span id="chirps"></div>
-    <span>
-        <button onclick="App.clear();">Delete All</button>
-    </span>
-    </div>
+
+
     <script>
+        function padLeft(n) {
+            return ("00" + n).slice(-2);
+        }
+
         class App {
+
             static autoRefresh() {
                 setInterval(() => {
                     App.loadAll()
@@ -34,21 +74,29 @@
             static loadAll() {
                 fetch(`all`)
                     .then(res => res.json())
-                    .then(json => {
+                    .then(allChirps => {
                         var html = []
-                        html.push("<ul>")
-                        console.log("Refreshed Chirps")                        
-                        json.forEach(chirp => {
+                        html.push(`<div>`)
+                        console.log("Refreshed Chirps")
+                        allChirps.forEach(chirp => {
                             let date = new Date(chirp.timestamp * 1000)
-                            html.push(`<li> [${date.toDateString()}] ${chirp.user} - ${chirp.text}</li>`)
+                            let formatted = padLeft(date.getUTCHours()) + ":" + padLeft(date.getMinutes());
+                            let dateHtml = `<span class="font-weight-light">${formatted}</span>`;
+                            let userHtml = `<span class="font-weight-bold">${chirp.user}</span>`;
+                            html.push(`<div style="margin-top:10px;" class="card">
+                                <div class="card-body"> ${dateHtml} - ${userHtml} ${chirp.text}</div>
+                                </div>
+                                `
+                            )
                         });
-                        html.push("</ul>")
+                        App.currentChirps = allChirps;
+                        html.push("</div>")
                         document.getElementById("chirps").innerHTML = html.join("")
                     })
             }
 
             static sendFromInput() {
-                let user = document.getElementById("user").value
+                let user = document.getElementById("user").value || "Anonymous"
                 let text = document.getElementById("text").value
                 App.send(user, text)
             }
@@ -65,7 +113,20 @@
         }
         App.loadAll()
         App.autoRefresh()
+
+
+
+
     </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
