@@ -13,4 +13,11 @@ services:
     restart: always
     ports: 
       - "1017:1017"
+  zumrud:
+    build: ./zumrud
+    restart: always
+    volumes:
+      - "./zumrud:/app"
+    ports:
+      - "3000:3000"
     
